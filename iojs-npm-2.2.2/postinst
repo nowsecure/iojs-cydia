@@ -1,0 +1,4 @@
+#!/bin/sh
+F=/private/var/mobile/iojs-ios.tar.gz
+tar xzvf $F -C /
+rm -f $F

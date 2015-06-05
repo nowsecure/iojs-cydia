@@ -1,0 +1,5 @@
+TODO
+----
+
+* Add post-uninstall script for npm
+* Move ios-build.sh script from iojs repo to here
