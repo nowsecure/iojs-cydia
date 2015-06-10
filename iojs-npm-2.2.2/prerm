@@ -1,0 +1,4 @@
+#!/bin/sh
+F=/usr/include/.iojs-ios.files
+cd /
+rm -f `cat $F`

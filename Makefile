@@ -3,22 +3,30 @@ IOJS=iojs-$(IOJS_VERSION)
 IOJS_NPM=iojs-npm-$(IOJS_VERSION)
 
 ROOT=$(shell pwd)/root
+ROJS=$(ROOT)/$(IOJS)
 
 all: $(IOJS)/root $(IOJS_NPM)/root
-	$(MAKE) -C $(IOJS)
-	$(MAKE) -C $(IOJS_NPM)
+	fakeroot $(MAKE) -C $(IOJS)
+	fakeroot $(MAKE) -C $(IOJS_NPM)
 
-$(IOJS)/root:
+deps:
+	fakeroot -v > /dev/null
+
+clean:
+
+.PHONY: all deps
+
+$(IOJS)/root: deps $(ROOT)
 	mkdir -p $(IOJS)/root/usr/bin
-	cp -a $(ROOT)/usr/bin/iojs $(IOJS)/root/usr/bin
-	cp -a $(ROOT)/usr/bin/node $(IOJS)/root/usr/bin
+	cp -a $(ROJS)/usr/bin/iojs $(IOJS)/root/usr/bin
+	cp -a $(ROJS)/usr/bin/node $(IOJS)/root/usr/bin
 	mkdir -p $(IOJS)/root/usr/share/man/man1
-	cp -a $(ROOT)/usr/share/man/man1/iojs.1 $(IOJS)/root/usr/share/man/man1
+	cp -a $(ROJS)/usr/share/man/man1/iojs.1 $(IOJS)/root/usr/share/man/man1
 	mkdir -p $(IOJS)/root/usr/share/systemtap/tapset
-	cp -a $(ROOT)/usr/share/systemtap/tapset/node.stp \
+	cp -a $(ROJS)/usr/share/systemtap/tapset/node.stp \
 		$(IOJS)/root/usr/share/systemtap/tapset
 
-$(IOJS_NPM)/root:
+$(IOJS_NPM)/root: deps $(ROOT)
 	cp -a $(ROOT)/* $(IOJS_NPM)/root/
 	rm -f $(IOJS_NPM)/root/usr/bin/iojs
 	rm -f $(IOJS_NPM)/root/usr/bin/node
@@ -31,6 +39,6 @@ $(IOJS_NPM)/root:
 
 $(ROOT):
 	git clone git@github.com:/nowsecure/io.js
-	cd io.js ; git checkout ios ; ./ios-build.sh
+	cd io.js ; git checkout ios ; ../build.sh
 	mkdir -p $(ROOT)
-	mv /tmp/iojs-ios $(ROOT)
+	mv /tmp/iojs-ios* $(ROOT)
