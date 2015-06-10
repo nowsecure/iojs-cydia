@@ -118,10 +118,6 @@ clean: ${PACKAGE_DIR}/clean
 .PHONY: deb
 deb: ${PACKAGE_DIR}/${PACKAGE}_${VERSION}_${ARCH}.deb
 
-
 clobber::
 	rm -rf ${PACKAGE_DIR}/debian_binary ${PACKAGE_DIR}/control \
 		${PACKAGE_DIR}/data ${PACKAGE_DIR}/build
-
-push:
-	scp *.deb radare.org:/srv/http/radareorg/cydia/debs

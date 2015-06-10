@@ -3,7 +3,7 @@ IOJS=iojs-$(IOJS_VERSION)
 IOJS_NPM=iojs-npm-$(IOJS_VERSION)
 
 ROOT=$(shell pwd)/root
-ROJS=$(ROOT)/$(IOJS)
+ROJS=$(ROOT)/iojs-ios
 
 all: $(IOJS)/root $(IOJS_NPM)/root
 	fakeroot $(MAKE) -C $(IOJS)
@@ -13,8 +13,11 @@ deps:
 	fakeroot -v > /dev/null
 
 clean:
+	fakeroot $(MAKE) -C $(IOJS) clean
+	fakeroot $(MAKE) -C $(IOJS_NPM) clean
+	rm -rf root
 
-.PHONY: all deps
+.PHONY: all deps clean
 
 $(IOJS)/root: deps $(ROOT)
 	mkdir -p $(IOJS)/root/usr/bin
@@ -38,7 +41,7 @@ $(IOJS_NPM)/root: deps $(ROOT)
 		$(IOJS_NPM)/root/private/var/mobile/
 
 $(ROOT):
-	git clone git@github.com:/nowsecure/io.js
+	git clone git@github.com:/nowsecure/io.js || true
 	cd io.js ; git checkout ios ; ../build.sh
 	mkdir -p $(ROOT)
 	mv /tmp/iojs-ios* $(ROOT)
