@@ -3,7 +3,7 @@ DEPENDS=
 PACKAGE_DIR?=${PWD}
 
 all:
-	sudo rm -rf control data
+	rm -rf control data
 	${MAKE} clean
 	mkdir -p data
 	cp -a root/* data
