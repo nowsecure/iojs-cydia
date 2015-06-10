@@ -9,14 +9,27 @@ if [ ! -f src/node.cc ]; then
 	exit 1
 fi
 
-export CC="xcrun --sdk iphoneos gcc -arch armv7"
-export CXX="xcrun --sdk iphoneos g++ -arch armv7 -std=c++11"
-export LINK="xcrun --sdk iphoneos g++ -arch armv7"
+if [ -z "${CPU}" ]; then
+	# Build for 32bit ARM by default
+	CPU=arm
+	#CPU=arm64
+fi
+
+case "$CPU" in
+arm)
+	CPUC=armv7
+	;;
+arm64)
+	CPUC=arm64
+	;;
+esac
+
+export CC="xcrun --sdk iphoneos gcc -arch ${CPUC}"
+export CXX="xcrun --sdk iphoneos g++ -arch ${CPUC} -std=c++11"
+export LINK="xcrun --sdk iphoneos g++ -arch ${CPUC}"
 
 export IPHONEOS_DEPLOYMENT_TARGET=8.3
 
-CPU=arm
-#CPU=arm64
 
 # fix build
 cp -f deps/cares/config/darwin/ares_config.h deps/cares/include/

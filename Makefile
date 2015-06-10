@@ -9,6 +9,9 @@ all: $(IOJS)/root $(IOJS_NPM)/root
 	fakeroot $(MAKE) -C $(IOJS)
 	fakeroot $(MAKE) -C $(IOJS_NPM)
 
+arm64:
+	export CPU=arm64 ; $(MAKE)
+
 deps:
 	fakeroot -v > /dev/null
 
