@@ -45,6 +45,6 @@ $(IOJS_NPM)/root: deps $(ROOT)
 
 $(ROOT):
 	git clone git@github.com:/nowsecure/io.js || true
-	cd io.js ; git checkout ios ; ../build.sh
+	cd io.js ; git checkout ios-2015-07-23 ; ../build.sh
 	mkdir -p $(ROOT)
 	mv /tmp/iojs-ios* $(ROOT)
